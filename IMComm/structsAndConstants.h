@@ -142,10 +142,12 @@ struct TUser
 		sName = tempString;
 		delete tempString;
 		
-		// For Debugging
-		CString textMessage(sName.c_str());
-		::AfxMessageBox(textMessage);
-		
+		/*
+			// For Debugging
+			CString textMessage(sName.c_str());
+			::AfxMessageBox(textMessage);
+		*/
+
 		// Move pointer over to end of Name
 		pBuffer = (pBuffer + sizeOfName);
 		// Get size of phone number
@@ -163,9 +165,11 @@ struct TUser
 		sPhoneNumber = tempString;
 		delete tempString;
 		
-		// For Debugging
-		CString textMessage2(sPhoneNumber.c_str());
-		::AfxMessageBox(textMessage2);
+		/*
+			// For Debugging
+			CString textMessage2(sPhoneNumber.c_str());
+			::AfxMessageBox(textMessage2);
+		*/
 
 		pBuffer = (pBuffer + sizeOfPhoneNum);
 		return pBuffer;

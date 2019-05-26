@@ -75,8 +75,9 @@ void CCommunication_Client::HandleIncomingMessages()
 	{
 		MTextMessage* pMessageToHandle = NULL;  // pointer to text message obj
 		pMessageToHandle = dynamic_cast<MTextMessage*>(GetTextMessagesQueue().Pop());
-		std::string text = pMessageToHandle->GetTextMessage().m_sText;
 		
+		
+		std::string text = pMessageToHandle->GetTextMessage().m_sText;
 		CString textMessage(text.c_str());
 		::AfxMessageBox(textMessage);
 
@@ -198,6 +199,9 @@ void CCommunication_Client::OnReceive(int nErrorCode)
 	//TODO: Post buffer to message box
 	// Call onMessageReceived() to get the message object and call its callbac
 	OnMessageReceived(arrBuffer);
+
+	::AfxMessageBox(L"Lets handle the message...calling handleIncomingMessage()");
+	this->Tick();
 }
 
 
