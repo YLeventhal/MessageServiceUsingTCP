@@ -33,6 +33,9 @@
     <ClInclude Include="structsAndConstants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MAcknowledgeMessage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -48,6 +51,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="structsAndConstants.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MAcknowledgeMessage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

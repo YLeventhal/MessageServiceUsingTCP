@@ -139,13 +139,13 @@ void CCommunication_Server::CServerSocket::OnReceive(int nErrorCode)
 
 	// When a message comes in the matching socket, in the list, receives it and runs over the list of
 	// all sockets and for each socket, other then itself, calls the inherited (from CAsyncSocket) Send()
-	//for (auto it : m_listSocketsToClient)
-	//{
-		//if ((it->m_sSocketName.compare(this->m_sSocketName)) != 0)
-		//{
-			/*it*///this->Send(arrBuffer, RECEIVE_BUFFER_SIZE);
-		//}
-	//}
+	for (auto it : m_listSocketsToClient)
+	{
+		if ((it->m_sSocketName.compare(this->m_sSocketName)) != 0)
+		{
+			it->Send(arrBuffer, RECEIVE_BUFFER_SIZE);
+		}
+	}
 }
 
 

@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="CMessageFactory_WhatsApp.h" />
     <ClInclude Include="IGroupsManager.h" />
+    <ClInclude Include="MAcknowledgeMessage.h" />
     <ClInclude Include="MTextMessage.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="structsAndConstants.h" />
@@ -157,6 +158,7 @@
   <ItemGroup>
     <ClCompile Include="CMessageFactory_WhatsApp.cpp" />
     <ClCompile Include="IGroupsManager.cpp" />
+    <ClCompile Include="MAcknowledgeMessage.cpp" />
     <ClCompile Include="MTextMessage.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

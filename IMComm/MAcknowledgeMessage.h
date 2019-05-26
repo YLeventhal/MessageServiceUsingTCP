@@ -1,4 +1,8 @@
 #pragma once
+#include "structsAndConstants.h"
+#include "structsAndConstants.cpp"
+#include "../GenComm/IMessage.h"
+
 class MAcknowledgeMessage :
 	public IMessage
 {
@@ -16,4 +20,5 @@ public:
    virtual bool ToBuffer();
    virtual bool FromBuffer(char* pBuffer, int nLength);
 };
+
 
