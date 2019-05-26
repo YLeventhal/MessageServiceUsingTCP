@@ -11,7 +11,7 @@ private:
 		TTextMessage m_msgText;  
 public:
 	MTextMessage();
-	MTextMessage(int messageType, const TTextMessage& message);
+	MTextMessage(int guid, const TTextMessage& message);
    ~MTextMessage();
 	const TTextMessage& GetTextMessage() { return m_msgText; }
 

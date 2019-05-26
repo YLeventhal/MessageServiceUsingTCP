@@ -3,10 +3,9 @@
 #include <string>
 #include "../GenComm/constants.h"
 
-#include "structsAndConstants.h"
-#include "structsAndConstants.cpp"
-
 #include "../GenComm/IMessage.h"
+#include "structsAndConstants.h"
+
 #include "MTextMessage.h"
 
 
@@ -41,12 +40,12 @@ int MTextMessage::Size()
 /*char a[sizeof(int)];
 *((int *)a) = 0x01010101;
 printf("%d\n", *((int *)a));*/
-bool MTextMessage::ToBuffer(char cBuffer[])
+bool MTextMessage::ToBuffer(char* cBuffer)
 {
 	// 1) Fill  buffer with basic fields of the MTextMessage object
 	// Casting the buffer pointer to what it is pointing to ie. int, int, int
 	*((int*)cBuffer) = m_guid;
-	*((int*)(cBuffer + SIZE_GUID)) = static_cast<int>(TEXT_MESSAGE);
+	*((int*)(cBuffer + SIZE_GUID)) = m_nMessageType;//static_cast<int>(TEXT_MESSAGE);
 	
 	// Moving buffer pointer over by the amount of bytes that were allocated values in the buffer
 	cBuffer = (cBuffer + SIZE_GUID + SIZE_INT);
@@ -59,12 +58,11 @@ bool MTextMessage::ToBuffer(char cBuffer[])
 
  bool MTextMessage::FromBuffer(char* pBuffer)
 {
-	//char* sync = *(char*)pBuffer;
-
+	 int sizeOfMessageType = SIZE_INT;
 	m_guid = *(int*)pBuffer;
 	m_nMessageType = *(int*)(pBuffer + SIZE_GUID);
 	
-	pBuffer = (pBuffer + SIZE_INT + SIZE_GUID);
+	pBuffer = (pBuffer + SIZE_GUID + sizeOfMessageType);
 	
 	m_msgText.FromBuffer(pBuffer);
 	// Note: the size of the text struct will differ depends on the text message and recipients...

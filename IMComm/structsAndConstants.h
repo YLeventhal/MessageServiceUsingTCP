@@ -95,101 +95,79 @@ struct TUser
 	std::string sPhoneNumber;
 	char* ToBuffer(char* pBuffer)
 	{
-		int guidLength = sizeof(guid);
 		int nameLength = sName.length();// Returns # of BYTES used(1 for each char) not inc null terminator
 		int phoneNumberLength = sPhoneNumber.length();//
 
-		*((int*)pBuffer) = guidLength;
-		//int ea = *((int *)pBuffer);
-
+		*((int*)pBuffer) = SIZE_GUID;
 		*((int*)(pBuffer + SIZE_INT)) = guid;
-		//int eb = *((int *)(pBuffer + SIZE_INT));
-
 		*((int*)(pBuffer + SIZE_INT + SIZE_GUID)) = nameLength;
-		//int ec = *((int *)(pBuffer + SIZE_INT + SIZE_GUID));
-
 
 		pBuffer = (pBuffer + SIZE_INT + SIZE_GUID + SIZE_INT);
 		sName.copy(pBuffer, nameLength);// When extracting from the buffer need to add \0 to end of extracted chars
-		//memcpy((pBuffer + SIZE_INT + SIZE_GUID + SIZE_INT), sName., nameLength);//*********************************************************************
-		//char ed = *((char *)(pBuffer + SIZE_INT + SIZE_GUID + SIZE_INT));
-		//char ee = *((char *)(pBuffer + SIZE_INT + SIZE_GUID + SIZE_INT + sizeof(char)));
-		//wchar_t ef = *((wchar_t *)(pBuffer + SIZE_INT + SIZE_GUID + SIZE_INT + sizeof(wchar_t) + sizeof(wchar_t)));
-		//wchar_t eg = *((wchar_t *)(pBuffer + SIZE_INT + SIZE_GUID + SIZE_INT + sizeof(wchar_t) + sizeof(wchar_t) + sizeof(wchar_t)));
 		
+		*((int*)(pBuffer + nameLength)) = phoneNumberLength;
 
-		*((int*)(pBuffer + SIZE_INT + SIZE_GUID + SIZE_INT + nameLength)) = phoneNumberLength;
-		//int el = *((int *)(pBuffer + SIZE_INT + SIZE_GUID + SIZE_INT + nameLength));
-
-		pBuffer = (pBuffer + SIZE_INT + SIZE_GUID + SIZE_INT + nameLength + SIZE_INT);
+		pBuffer = (pBuffer + nameLength + SIZE_INT);
 		sPhoneNumber.copy(pBuffer, phoneNumberLength);
-		//memcpy((pBuffer + SIZE_INT + SIZE_GUID + SIZE_INT + nameLength + SIZE_INT), sPhoneNumber.GetBuffer(), phoneNumberLength);//*******************
-		/*wchar_t em = *((wchar_t *)(pBuffer + SIZE_INT + SIZE_GUID + SIZE_INT + nameLength + SIZE_INT));
-		wchar_t en = *((wchar_t *)(pBuffer + SIZE_INT + SIZE_GUID + SIZE_INT + nameLength + SIZE_INT + sizeof(wchar_t)));
-		wchar_t eq = *((wchar_t *)(pBuffer + SIZE_INT + SIZE_GUID + SIZE_INT + nameLength + SIZE_INT + sizeof(wchar_t) + sizeof(wchar_t) ));
-		wchar_t er = *((wchar_t *)(pBuffer + SIZE_INT + SIZE_GUID + SIZE_INT + nameLength + SIZE_INT + sizeof(wchar_t) + sizeof(wchar_t) + sizeof(wchar_t) ));
-		wchar_t es = *((wchar_t *)(pBuffer + SIZE_INT + SIZE_GUID + SIZE_INT + nameLength + SIZE_INT + sizeof(wchar_t) + sizeof(wchar_t) + sizeof(wchar_t) + sizeof(wchar_t)));
-		wchar_t et = *((wchar_t *)(pBuffer + SIZE_INT + SIZE_GUID + SIZE_INT + nameLength + SIZE_INT + sizeof(wchar_t) + sizeof(wchar_t) + sizeof(wchar_t) + sizeof(wchar_t) + sizeof(wchar_t)));
-		*/
 		
-		pBuffer = (pBuffer + SIZE_INT + SIZE_GUID + SIZE_INT + nameLength + SIZE_INT + phoneNumberLength);
+		pBuffer = (pBuffer + phoneNumberLength);
 
 		return pBuffer;
 	}
 
 	char* FromBuffer(char* pBuffer)
 	{
-		int sizeOfNext1;// the size of this variable itself is SIZE_INT
-		int sizeOfNext2;
-		int sizeOfNext3;
-		int sizeOfNext4;
+		// Variables to store sizes of the data entered into the buffer
+		int sizeOfGuid;
+		int sizeOfName;
+		int sizeOfPhoneNum;
+		// Used when looping over the buffer to store the data that's read, and then converting to a string type
 		char* tempString;
 
-		sizeOfNext1 = *((int*)pBuffer);
+		// Extract the # of BYTEs of the guid
+		sizeOfGuid = *((int*)pBuffer);
 		guid = *((int*)(pBuffer + SIZE_INT));
-		sizeOfNext2 = *((int*)(pBuffer + SIZE_INT + sizeOfNext1));
-		// sizeOfNext's value is probably no longer same size as an int therefor move pointer SIZE_INT instead of sizeOfNext
-		pBuffer = (pBuffer + SIZE_INT + sizeOfNext1 + sizeOfNext2);
+		// Extract the # of BYTEs of the name
+		sizeOfName = *((int*)(pBuffer + SIZE_INT + sizeOfGuid ));
+		// Move pointer over by the # of BYTEs we have already read from the buffer
+		pBuffer = (pBuffer + SIZE_INT + sizeOfGuid  + sizeOfName);
 
-		// Get size of name
-		sizeOfNext3 = *((int*)pBuffer);
-		// Move pointer over to point at name so loop can be kept simple
-		pBuffer = (pBuffer + SIZE_INT);
-
-		tempString = new char[sizeOfNext3 + 1];
-		for (int i = 0; i < sizeOfNext3; i++)//************************************************
+		// Loop over the buffer to extract the name field
+		tempString = new char[sizeOfName + 1];
+		for (int i = 0; i < sizeOfName; i++)
 		{
 			tempString[i] = *(pBuffer + i);
 		}
-		tempString[sizeOfNext3] = '\0';
+		tempString[sizeOfName] = '\0';
 		sName = tempString;
 		delete tempString;
+		
 		// For Debugging
 		CString textMessage(sName.c_str());
 		::AfxMessageBox(textMessage);
 		
-		// Move pointer over to end of sName
-		pBuffer = (pBuffer + sizeOfNext3);
-
-
+		// Move pointer over to end of Name
+		pBuffer = (pBuffer + sizeOfName);
 		// Get size of phone number
-		sizeOfNext4 = *((int*)pBuffer);
-		// Move pointer over to point at phone number so loop can be kept simple
+		sizeOfPhoneNum = *((int*)pBuffer);
+		// Move pointer over to point at phone number 
 		pBuffer = (pBuffer + SIZE_INT);
-		tempString = new char[sizeOfNext4 + 1];
-		for (int i = 0; i < sizeOfNext4; i++)//*******************************************************************************************************
+
+		// Loop over the buffer to extract the phone number field
+		tempString = new char[sizeOfPhoneNum + 1];
+		for (int i = 0; i < sizeOfPhoneNum; i++)
 		{
 			tempString[i] = *(pBuffer + i);
 		}
-		tempString[sizeOfNext3] = '\0';
+		tempString[sizeOfPhoneNum] = '\0';
 		sPhoneNumber = tempString;
 		delete tempString;
+		
 		// For Debugging
 		CString textMessage2(sPhoneNumber.c_str());
 		::AfxMessageBox(textMessage2);
 
-		pBuffer = (pBuffer + sizeOfNext4);
-
+		pBuffer = (pBuffer + sizeOfPhoneNum);
 		return pBuffer;
 	}
 };
@@ -203,11 +181,10 @@ struct TGroup
 	std::vector<TUser> nlistUsers;
 	char* ToBuffer(char* pBuffer)
 	{
-		//char* p_temp = pBuffer;
-		*((int*)pBuffer) = guid;
-		//int ea = *((int*)pBuffer);
+		*((int*)pBuffer) = SIZE_GUID;
+		*((int*)(pBuffer + SIZE_INT)) = guid;
 
-		pBuffer = (pBuffer + SIZE_GUID);
+		pBuffer = (pBuffer + SIZE_GUID + SIZE_INT);
 		for (auto it = nlistUsers.begin(); it != nlistUsers.end(); ++it)
 		{
 			pBuffer = (it->ToBuffer(pBuffer));
@@ -242,29 +219,24 @@ struct TTextMessage
 	TGroup m_groupDestination; // to which group, in event where sending to whole group 
 	void ToBuffer(char* pBuffer)
 	{
-		// CString is not a primitive type and therefor we can't typecast and simply copy, rather we must access the 
-		//buffer containing the CString; the string is in unicode and therefor is alloted 2 bytes for each letter;
-		// GetBuffer() returns the number of letters and therfor we must multi by 2 to get the bytes.
-		//pBuffer = StringToBuffer(pBuffer, m_sText);
-		
 		int textLength = m_sText.length();
 		*((int*)pBuffer) = textLength;
-		//int ev = *((int *)(pBuffer + SIZE_GUID));
-		// Add text message(CString) to the buffer
-
+		
 		pBuffer = (pBuffer + SIZE_INT);
 		m_sText.copy(pBuffer, textLength);
 
 		//((pBuffer + SIZE_INT), m_sText.GetBuffer(), textLength);
 		// Move buffer pointer over and pass on the buffer to TUser struct to deal with
-		pBuffer = (pBuffer + SIZE_INT + textLength);
+		pBuffer = (pBuffer + textLength);
 		pBuffer = m_userDestination.ToBuffer(pBuffer);
 		pBuffer = m_groupDestination.ToBuffer(pBuffer);
 	}
 
 	void FromBuffer(char* pBuffer)
 	{
-		int sizeOfNext;// the size of this variable itself is SIZE_INT
+		// This value  indicates the number of BYTEs to read to  extract the current information, filling one field at a time
+		// In this case, it should give me the num of BYtes m_sText takes
+		int sizeOfNext;
 		
 		sizeOfNext = *((int*)pBuffer);
 		
@@ -284,7 +256,7 @@ struct TTextMessage
 		CString textMessage(m_sText.c_str());
 		::AfxMessageBox(textMessage);
 
-		pBuffer = (pBuffer + SIZE_INT + sizeOfNext);
+		pBuffer = (pBuffer + sizeOfNext);
 
 		//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 		

@@ -96,7 +96,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>"C:\Users\YL\source\repos\MessangerService\Debug\GenComm.lib";"C:\Users\YL\source\repos\MessangerService\Debug\IMComm.lib";</AdditionalDependencies>
+      <AdditionalDependencies>"C:\Users\YL\source\repos\YLeventhal\MessangerService\Debug\GenComm.lib";"C:\Users\YL\source\repos\YLeventhal\MessangerService\Debug\IMComm.lib";</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
