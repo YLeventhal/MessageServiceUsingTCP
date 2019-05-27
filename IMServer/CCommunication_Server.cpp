@@ -134,9 +134,11 @@ void CCommunication_Server::CServerSocket::OnReceive(int nErrorCode)
 		return;
 	}
 
-	Send(arrBuffer, 100);
-	//Send(L"got your buffer", 30);
-
+	// Add senders (server) socket name to buffer 
+	int socketNameSize = this->m_sSocketName.length();
+	*((int*)(arrBuffer + RECEIVE_BUFFER_SIZE - 4)) = socketNameSize;
+	m_sSocketName.copy((arrBuffer + RECEIVE_BUFFER_SIZE - 4 - socketNameSize), socketNameSize);
+	int i = 0;
 	// When a message comes in the matching socket, in the list, receives it and runs over the list of
 	// all sockets and for each socket, other then itself, calls the inherited (from CAsyncSocket) Send()
 	for (auto it : m_listSocketsToClient)

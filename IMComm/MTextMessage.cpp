@@ -59,9 +59,22 @@ bool MTextMessage::ToBuffer(char* cBuffer)
  bool MTextMessage::FromBuffer(char* pBuffer)
 {
 	 int sizeOfMessageType = SIZE_INT;
+	 static const int sizeOfBuffer = 100;
+	 int sizeOfSendingSocketName = *((int*)(pBuffer + sizeOfBuffer - SIZE_INT));
+
 	m_guid = *(int*)pBuffer;
 	m_nMessageType = *(int*)(pBuffer + SIZE_GUID);
+
+	char* tempString = new char[sizeOfSendingSocketName + 1];
+	for (int i = 0; i < sizeOfSendingSocketName; i++)
+	{
+		tempString[i] = *(pBuffer + sizeOfBuffer - SIZE_INT - sizeOfSendingSocketName + i);
+	}
+	tempString[sizeOfSendingSocketName] = '\0';
+	m_sendingSocket = tempString;
+	delete tempString;
 	
+
 	pBuffer = (pBuffer + SIZE_GUID + sizeOfMessageType);
 	
 	m_msgText.FromBuffer(pBuffer);

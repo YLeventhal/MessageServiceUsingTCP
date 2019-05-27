@@ -78,8 +78,13 @@ void CCommunication_Client::HandleIncomingMessages()
 		
 		
 		std::string text = pMessageToHandle->GetTextMessage().m_sText;
+		std::string sender = pMessageToHandle->GetSendingSocketName();
 		CString textMessage(text.c_str());
 		::AfxMessageBox(textMessage);
+
+		CString sentFrom(sender.c_str());
+		::AfxMessageBox(textMessage);
+
 
 		Sleep(5000);
 		// while runs if test is not 0 even if value is negative; a pointer holds a number ie. address, and so long as it is not null it evals to true
