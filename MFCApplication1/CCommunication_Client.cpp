@@ -87,6 +87,11 @@ void CCommunication_Client::HandleIncomingMessages()
 
 
 		Sleep(5000);
+
+		// Send Acknowledgement of received and read message
+		SendAck(*pMessageToHandle);
+
+
 		// while runs if test is not 0 even if value is negative; a pointer holds a number ie. address, and so long as it is not null it evals to true
 		// This leaves me with an Imessage obj (if the queue wasn't empty). We then dynamic cast it to a text message
 		//while (!(GetTextMessagesQueue().Empty()))
@@ -105,8 +110,28 @@ void CCommunication_Client::Tick()
 
 
 
+void CCommunication_Client::SendAck(const MTextMessage& textMessageToAck)
+{
+	int receivedMessageGuid = textMessageToAck.GetGuid();
+
+	//Create a message object to fill and call its ToBuffer() method
+	MAcknowledgeMessage* pAckMessage = new MAcknowledgeMessage(5779, receivedMessageGuid);
+	// Buffer to hold message object details which are being sent 
+	char cBuffer[100];
+	// Filling the Buffer with the message objects details
+	pMTextmessage->ToBuffer(cBuffer);
+	//Sending the Buffer to server
+	this->Send(cBuffer, 100);
+
+};
+
+
+
+
+
+
+
 //void CCommunication_Client::SendGroupCreateUpdate(const TGroup& group) {};
-//void CCommunication_Client::SendAck(const TTextMessage& textMessageToAck) {};
 /*int CCommunication_Client::SendTextMessage(const TTextMessage& text)
 {
 	// Buffer to hold message details which are being sent
@@ -162,9 +187,12 @@ void CCommunication_Client::OnConnect(int nErrorCode)
 	text.m_userDestination.sName = ("dave");
 	text.m_userDestination.sPhoneNumber = ("058");
 	text.m_groupDestination.guid = 12;
-	//AfxMessageBox(L"about to send text");
+
 	SendTextMessage(text);
 
+	CString Ca(this->m_sSocketName.c_str());
+	//AfxMessageBox(Ca);
+	::AfxMessageBox(L"text message sent by " + Ca);
 }
 
 

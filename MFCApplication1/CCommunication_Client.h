@@ -63,7 +63,7 @@ public:
 	//void SendTextMessage(const TTextMessage& text); // argument: struct (3) // IMPLEMENTATION WILL INC CREATING A TEXT MSSG OBJ(using factory) AND CALLING TObUFFER AND THEN SENDMESSAGE()
 	void SendTextMessage(const TTextMessage& text);
 	void SendGroupCreateUpdate(const TGroup& group); // argument: struct (2)
-	void SendAck(const TTextMessage& textMessageToAck); // argument: struct (3)
+	void SendAck(const MTextMessage& textMessageToAck); // argument: struct (3)
 
 	void HandleIncomingMessages();
 	void Tick();

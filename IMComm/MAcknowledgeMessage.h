@@ -11,7 +11,7 @@ private:
 public:
 	MAcknowledgeMessage();
 	// Consider also calling IMessage's non-default constructor and passing it arguments, like i did in MTextMessage.h
-	MAcknowledgeMessage(int guidOriginalMessage);
+	MAcknowledgeMessage(int guid, int guidOriginalMessage);
    ~MAcknowledgeMessage();
 
    const int GetOriginalMessageGUID() { return m_guidOriginalMessage; }
