@@ -41,12 +41,12 @@ void CCommunication_Client::OnTextMessageReceived(IMessage* pMessage)
 /*void CCommunication_Client::OnGroupCreateUpdateReceived(IMessage* pMessage)
 {
 	CCommunication_Client::GetInstance()->m_queueGroupCreateUpdateMessages.Push((MGroupCreateUpdate*)pMessage);
-}
+}*/
 
 void CCommunication_Client::OnAcknowledgeReceived( IMessage* pMessage)
 {
 	CCommunication_Client::GetInstance()->m_queueAcknowledge.Push((MAcknowledgeMessage*)pMessage);
-}*/
+}
 
 /*void CMefathimSocket::RegisterCallback(EMessageType eMessageType, void* pfnCallback)
 {
@@ -64,7 +64,7 @@ void CCommunication_Client::Register()
 	//since RegisterCallback is an inherited method, using "this->" makes it clear that this method exists in this object(even though it is technically unnecessary)
 	this->RegisterCallback(TEXT_MESSAGE, OnTextMessageReceived);// &(this->OnTextMessageReceived));
 	//this->RegisterCallback(EMessageType::CREATE_UPDATE_GROUP, CCommunication_Client::GetInstance()->OnGroupCreateUpdateReceived);
-	//this->RegisterCallback(EMessageType::ACKNOWLEDGE, CCommunication_Client::GetInstance()->OnAcknowledgeReceived);
+	this->RegisterCallback(ACKNOWLEDGE, OnAcknowledgeReceived);
 }
 
 
@@ -73,7 +73,7 @@ void CCommunication_Client::HandleIncomingMessages()
 {
 	if (!(GetTextMessagesQueue().Empty()))
 	{
-		MTextMessage* pMessageToHandle = NULL;  // pointer to text message obj
+		MTextMessage* pMessageToHandle ;  // pointer to text message obj
 		pMessageToHandle = dynamic_cast<MTextMessage*>(GetTextMessagesQueue().Pop());
 		
 		
@@ -100,6 +100,33 @@ void CCommunication_Client::HandleIncomingMessages()
 			// Update window (and DB); In Primitive version just post a message box with the text received
 			//OnTextMessageReceived((dynamic_cast<MTextMessage*>pMessageToHandle)->GetTextMessage()));
 	}
+	if (!(GetAcknowledgeMessagesQueue().Empty()))
+	{
+		MAcknowledgeMessage* pAckToHandle;  // pointer to text message obj
+		pAckToHandle = dynamic_cast<MAcknowledgeMessage*>(GetTextMessagesQueue().Pop());
+
+
+		//int originalGuid = pMessageToHandle->GetOriginalMessageGUID();
+		//int Guid = pMessageToHandle->GetGuid();
+
+		CString msg1;
+		msg1.Format(_T("%d"), pAckToHandle->GetOriginalMessageGUID());
+		AfxMessageBox(msg1); 
+		
+		CString msg2;
+		msg2.Format(_T("%d"), pAckToHandle->GetGuid());
+		AfxMessageBox(msg2);
+
+		//std::string sender = pMessageToHandle->GetSendingSocketName();
+		//CString textMessage(text.c_str());
+		//::AfxMessageBox(textMessage);
+
+		//CString sentFrom(sender.c_str());
+		//::AfxMessageBox(textMessage);
+
+
+		Sleep(5000);
+	}
 }
 
 // Tick function for main to call
@@ -119,7 +146,7 @@ void CCommunication_Client::SendAck(const MTextMessage& textMessageToAck)
 	// Buffer to hold message object details which are being sent 
 	char cBuffer[100];
 	// Filling the Buffer with the message objects details
-	pMTextmessage->ToBuffer(cBuffer);
+	pAckMessage->ToBuffer(cBuffer);
 	//Sending the Buffer to server
 	this->Send(cBuffer, 100);
 

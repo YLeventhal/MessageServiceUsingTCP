@@ -33,19 +33,18 @@ int MAcknowledgeMessage::Size()
 	return size;
 }
 
-bool MAcknowledgeMessage::ToBuffer()
+bool MAcknowledgeMessage::ToBuffer(char* cBuffer)
 {
-	char* cBuffer = new char[this->Size()];
-	*(int*)cBuffer = m_guid;
-	*(int*)(cBuffer + SIZE_GUID) = (int)EMessageType::ACKNOWLEDGE;
-	*(int*)(cBuffer + SIZE_GUID + SIZE_INT) = m_guidOriginalMessage;
+	*((int*)cBuffer) = m_guid;
+	*((int*)(cBuffer + SIZE_GUID)) = m_nMessageType;
+	*((int*)(cBuffer + SIZE_GUID + SIZE_INT)) = m_guidOriginalMessage;
 
 	return cBuffer;
 }
 
-bool MAcknowledgeMessage::FromBuffer(char* pBuffer, int nLength)
+bool MAcknowledgeMessage::FromBuffer(char* pBuffer)
 {
-	m_guid = *(int*)pBuffer;
+	m_guid = *((int*)pBuffer);
 	m_nMessageType = *((int*)(pBuffer + SIZE_GUID));
 	m_guidOriginalMessage = *((int*)(pBuffer + SIZE_GUID + SIZE_INT));
 

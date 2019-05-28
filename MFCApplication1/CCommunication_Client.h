@@ -3,6 +3,8 @@
 #include "../IMComm/CMessageFactory_WhatsApp.h"
 #include "../GenComm/CSafeMessageQueue.h"
 #include "../IMComm/structsAndConstants.h"
+#include "../IMComm/MTextMessage.h"
+
 
 
 class CCommunication_Client :

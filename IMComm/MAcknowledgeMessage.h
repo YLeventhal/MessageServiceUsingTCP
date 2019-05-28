@@ -17,8 +17,8 @@ public:
    const int GetOriginalMessageGUID() { return m_guidOriginalMessage; }
 
    virtual int Size();
-   virtual bool ToBuffer();
-   virtual bool FromBuffer(char* pBuffer, int nLength);
+   virtual bool ToBuffer(char* cBuffer);
+   virtual bool FromBuffer(char* pBuffer);
 };
 
 
