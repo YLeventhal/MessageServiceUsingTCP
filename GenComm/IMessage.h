@@ -10,9 +10,12 @@ protected:
 
 
 public:
-	IMessage(int guid, EMessageType messageType);
+	IMessage(int guid, EMessageType messageType):
+		m_guid(guid),
+		m_nMessageType(static_cast<int>(messageType))
+		{}
 	IMessage() {}
-	virtual ~IMessage();
+	virtual ~IMessage() {}
 
 	
 	int GetGuid()const { return m_guid; }

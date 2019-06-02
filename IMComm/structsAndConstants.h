@@ -87,6 +87,8 @@ struct TTextMessage
 //static const int SIZE_GUID = sizeof(int);
 //static const int SIZE_INT = sizeof(int);
 
+// NOTE: because the buffer, both sending and receiving, where defined to be of size 100, therefor we are declaring type of string lengths 
+// using int instead of size_t, because the size of string-size will not be able to exceed the size of an int
 
 struct TUser
 {

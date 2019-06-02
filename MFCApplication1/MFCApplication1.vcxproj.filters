@@ -54,6 +54,9 @@
     <ClInclude Include="CCommunication_Client.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Cdiag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFCApplication1.cpp">
@@ -87,6 +90,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CCommunication_Client.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cdiag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

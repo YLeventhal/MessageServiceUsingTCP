@@ -11,6 +11,7 @@
 #include "../IMComm/MTextMessage.h"
 #include "../IMComm/MGroupCreateUpdate.h"
 #include "../IMComm/MAcknowledgeMessage.h"
+#include "Cdiag.h"
 
 #include "CCommunication_Client.h"
 
@@ -114,7 +115,7 @@ void CCommunication_Client::HandleIncomingMessages()
 		AfxMessageBox(msg1); 
 		
 		CString msg2;
-		msg2.Format(_T("%d"), pAckToHandle->GetGuid());
+		msg2.Format(_T("%d"), pAckToHandle->GetAckMessage());
 		AfxMessageBox(msg2);
 
 		//std::string sender = pMessageToHandle->GetSendingSocketName();

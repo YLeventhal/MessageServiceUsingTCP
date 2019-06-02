@@ -141,6 +141,11 @@ void CCommunication_Server::CServerSocket::OnReceive(int nErrorCode)
 	int i = 0;
 	// When a message comes in the matching socket, in the list, receives it and runs over the list of
 	// all sockets and for each socket, other then itself, calls the inherited (from CAsyncSocket) Send()
+
+	if (this->m_sSocketName == "Server Socket 2")
+	{
+		Sleep(10000);
+	}
 	for (auto it : m_listSocketsToClient)
 	{
 		if ((it->m_sSocketName.compare(this->m_sSocketName)) != 0)

@@ -29,9 +29,11 @@ int MAcknowledgeMessage::Size()
 
 	size += (2 * SIZE_GUID);// GUID of this message and of text message that is being acknowledged
 	size += SIZE_INT;
+	size += ackMessage.length();
 
 	return size;
 }
+
 
 bool MAcknowledgeMessage::ToBuffer(char* cBuffer)
 {
@@ -39,14 +41,38 @@ bool MAcknowledgeMessage::ToBuffer(char* cBuffer)
 	*((int*)(cBuffer + SIZE_GUID)) = m_nMessageType;
 	*((int*)(cBuffer + SIZE_GUID + SIZE_INT)) = m_guidOriginalMessage;
 
-	return cBuffer;
+	std::string response = "Got Your Message!!";
+	int responseLength = response.length();
+
+	// Add size of response to the buffer to indicate how many bytes to extract
+	*((int*)(cBuffer + SIZE_GUID + SIZE_INT + SIZE_INT)) = responseLength;
+	// When extracting from the buffer need to add \0 to end of extracted chars
+	response.copy(cBuffer, responseLength);
+
+	return true;
 }
+
+
 
 bool MAcknowledgeMessage::FromBuffer(char* pBuffer)
 {
+	int responseLength;
+	char* tempString;
+
 	m_guid = *((int*)pBuffer);
 	m_nMessageType = *((int*)(pBuffer + SIZE_GUID));
 	m_guidOriginalMessage = *((int*)(pBuffer + SIZE_GUID + SIZE_INT));
+
+	responseLength = *((int*)(pBuffer + SIZE_GUID + SIZE_INT + SIZE_INT));
+
+	tempString = new char[responseLength + 1];
+	for (int i = 0; i < responseLength; i++)
+	{
+		tempString[i] = *(pBuffer + i);
+	}
+	tempString[responseLength] = '\0';
+	ackMessage = tempString;
+	delete tempString;
 
 	return true;
 }

@@ -35,6 +35,7 @@
 
 
 #include <afxsock.h>            // MFC socket extensions
+#include <afxwin.h>
 
 
 
