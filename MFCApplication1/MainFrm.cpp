@@ -4,7 +4,8 @@
 
 #include "stdafx.h"
 #include "MFCApplication1.h"
-
+#include "../GenComm/constants.h"
+#include "CCommunication_Client.h"
 #include "MainFrm.h"
 
 #ifdef _DEBUG
@@ -26,6 +27,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnApplicationLook)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnUpdateApplicationLook)
 	ON_WM_SETTINGCHANGE()
+	ON_COMMAND(ID_SENDMESSAGE_TEXTMESSAGE, &CMainFrame::OnSendmessageTextmessage)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -404,4 +406,23 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 {
 	CFrameWndEx::OnSettingChange(uFlags, lpszSection);
 	m_wndOutput.UpdateFonts();
+}
+
+
+void CMainFrame::OnSendmessageTextmessage()
+{
+
+	// TODO: Add your command handler code here
+	TTextMessage text;
+	text.m_sText = ("test text");
+	text.m_userDestination.guid = 17;
+	text.m_userDestination.sName = ("dave");
+	text.m_userDestination.sPhoneNumber = ("058");
+	text.m_groupDestination.guid = 12;
+
+	//Debugging
+	CString Ca(CCommunication_Client::GetInstance()->GetSocketName().c_str());
+	::AfxMessageBox(Ca + L" sending text message");
+
+	CCommunication_Client::GetInstance()->SendTextMessage(text);
 }

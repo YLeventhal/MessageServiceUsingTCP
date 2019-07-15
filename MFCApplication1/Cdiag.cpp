@@ -11,7 +11,7 @@
 IMPLEMENT_DYNAMIC(Cdiag, CDialog)
 
 Cdiag::Cdiag(CWnd* pParent /*=nullptr*/)
-	: CDialog(IDD_DIALOG1, pParent)
+	: CDialog(/*IDD_DIALOG1, pParent*/)
 {
 
 }

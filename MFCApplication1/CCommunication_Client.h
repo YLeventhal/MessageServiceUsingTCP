@@ -38,6 +38,7 @@ public:
 		return s_pCCommunicationClient;
 	}
 
+	std::string& GetSocketName() { return m_sSocketName; }
 	// This method fills a hash tablewith message type and corresponding callback function and is called in CComm's constructor  
 	void Register();
 

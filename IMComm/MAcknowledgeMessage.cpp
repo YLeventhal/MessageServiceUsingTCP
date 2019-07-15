@@ -46,6 +46,8 @@ bool MAcknowledgeMessage::ToBuffer(char* cBuffer)
 
 	// Add size of response to the buffer to indicate how many bytes to extract
 	*((int*)(cBuffer + SIZE_GUID + SIZE_INT + SIZE_INT)) = responseLength;
+
+	cBuffer = (cBuffer + SIZE_GUID + SIZE_INT + SIZE_INT + SIZE_INT);
 	// When extracting from the buffer need to add \0 to end of extracted chars
 	response.copy(cBuffer, responseLength);
 
@@ -56,6 +58,7 @@ bool MAcknowledgeMessage::ToBuffer(char* cBuffer)
 
 bool MAcknowledgeMessage::FromBuffer(char* pBuffer)
 {
+	int i;
 	int responseLength;
 	char* tempString;
 
@@ -65,8 +68,11 @@ bool MAcknowledgeMessage::FromBuffer(char* pBuffer)
 
 	responseLength = *((int*)(pBuffer + SIZE_GUID + SIZE_INT + SIZE_INT));
 
+	// Update pointer to buffer
+	pBuffer = (pBuffer + SIZE_GUID + SIZE_INT + SIZE_INT + SIZE_INT);
+
 	tempString = new char[responseLength + 1];
-	for (int i = 0; i < responseLength; i++)
+	for (i = 0; i < responseLength; i++)
 	{
 		tempString[i] = *(pBuffer + i);
 	}

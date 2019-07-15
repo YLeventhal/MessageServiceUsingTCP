@@ -22,7 +22,7 @@ std::list <CCommunication_Server::CServerSocket*> CCommunication_Server::m_listS
 
 CCommunication_Server::CCommunication_Server()
 {
-	//Register();
+	m_sSocketName = "SERVER";
 }
 
 
@@ -51,30 +51,12 @@ void CCommunication_Server::OnACKNOWLEDGEReceived(MAcknowledgeMessage message)
 	CTextMessageManager::GetInstance()->OnAckReceived(message);
 }*/
 
-void CCommunication_Server::Register()
-{
-	//<<<<<<<<<RegisterCallback(EMessageType::TEXT_MESSAGE, CCommunication_Server::GetInstance()->OnTextMessageReceived);>>>>>>>>>>>>>
-	//this->RegisterCallback(EMessageType::CREATE_UPDATE_GROUP, OnGroupCreateUpdateReceived);
-	//this->RegisterCallback(EMessageType::ACKNOWLEDGE, OnAcknowledgeReceived);
-}
 
 void CCommunication_Server::SendTextMessage(TTextMessage text) // sends to other client-side  ??????????????????????????????????????????????????????????????????
 {
 	CTextMessageManager::GetInstance()->PublishTextMessage(text);
 }
 
-
-void CCommunication_Server::RegisterCallback(EMessageType eMessageType, void* pfnCallback)// (*pfnCallback)(IMessage*))
-{
-	//m_hashCallbacks.insert({ eMessageType, pfnCallback });
-	m_hashCallbacks[eMessageType] = pfnCallback;
-	//m_hashCallbacks.insert(std::pair<EMessageType, void*>/*(*)(IMessage*)>*/(eMessageType, pfnCallback));
-}
-
-void CCommunication_Server::RemoveCallback(EMessageType eMessageType)
-{
-	m_hashCallbacks.erase(eMessageType);
-}
 
 /*void CCommunication_Server::OnMessageReceived(char pBuffer[])
 {
@@ -94,11 +76,12 @@ void CCommunication_Server::RemoveCallback(EMessageType eMessageType)
 // This function is called when the server receives a connection request (V):
 void CCommunication_Server::OnAccept(int nErrorCode)
 {
-	//::AfxMessageBox(L"received connection request");
-// Create new socket for the connection to requesting client:
+	// Create new socket for the connection to requesting client:
 	CServerSocket* pNewSocket = new CServerSocket(/*m_pMessageFactory,*/ "Server Socket " + std::to_string(++SOCKET_NUMBER));
 	this->m_listSocketsToClient.push_back(pNewSocket);
-	CString sName(pNewSocket->GetSocketName().c_str());
+
+	//Debugging
+	CString sName(pNewSocket->m_sSocketName.c_str());
 	::AfxMessageBox(sName + L" is added to the server socket list");
 	// Accept client request by binding new socket to the clients ip and port
 	BOOL bAccepted = CAsyncSocket::Accept(*pNewSocket);

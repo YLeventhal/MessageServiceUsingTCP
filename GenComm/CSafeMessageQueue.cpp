@@ -27,8 +27,8 @@ void CSafeMessageQueue::Push(IMessage* message)
 
 IMessage* CSafeMessageQueue::Pop()
 {
-		IMessage* retVal = nullptr;
-		EnterCriticalSection(&m_cs);
+	IMessage* retVal = nullptr;
+	EnterCriticalSection(&m_cs);
 	if (!m_qMessageQueue.empty())
 	{
 		retVal = m_qMessageQueue.front();
